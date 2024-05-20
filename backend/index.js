@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+require('dotenv').config()
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
@@ -10,13 +11,13 @@ const app = express();
 
 
 const salt = bcrypt.genSaltSync(10)
-const secretKey = "BILO87y8nNod8udjdklnc"
+const secretKey = process.env.SECRET_KEY
 
 app.use(cors({credentials:true , origin:'http://localhost:5173'}))
 app.use(express.json())
 app.use(cookieParser())
 
-mongoose.connect("mongodb+srv://yuvarajgoud20:k7BGv7NrVkYaYSoE@blogappcluster.lbkgfdk.mongodb.net/")
+mongoose.connect(process.env.MONGODB_URL)
 .then( ()=> console.log("Database Connected"))
 
 app.post('/register',async (req,res)=>{
@@ -58,6 +59,3 @@ app.post('/logout',(req,res)=>{
   res.cookie('token','').json('ok')
 })
 app.listen(8000)
-
-//MONGO Atlas Connection URL
-//mongodb+srv://yuvarajgoud20:k7BGv7NrVkYaYSoE@blogappcluster.lbkgfdk.mongodb.net/
